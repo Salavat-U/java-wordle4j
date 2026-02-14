@@ -1,4 +1,9 @@
-package ru.yandex.practicum;
+package ru.yandex.practicum.wordle.game;
+
+import ru.yandex.practicum.exception.*;
+import ru.yandex.practicum.wordle.service.PrintWriter;
+import ru.yandex.practicum.wordle.service.WordleDictionary;
+import ru.yandex.practicum.wordle.service.WordleDictionaryLoader;
 
 import java.util.Scanner;
 
@@ -15,7 +20,7 @@ public class Wordle {
 
             while (true) {
                 System.out.println("Введите слово или пустую строку для подсказки:");
-                String word = scanner.nextLine().toLowerCase().trim();
+                String word = scanner.nextLine();
                 try {
                     if (word.isEmpty()) {
                         String hint = wordleGame.startGame(word);

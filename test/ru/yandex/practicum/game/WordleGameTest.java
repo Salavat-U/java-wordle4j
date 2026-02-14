@@ -1,8 +1,12 @@
-package ru.yandex.practicum;
+package ru.yandex.practicum.game;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import ru.yandex.practicum.exception.*;
+import ru.yandex.practicum.wordle.service.WordleDictionary;
+import ru.yandex.practicum.wordle.service.WordleDictionaryLoader;
+import ru.yandex.practicum.wordle.game.WordleGame;
 
 import java.io.IOException;
 import java.io.Writer;

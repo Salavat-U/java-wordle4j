@@ -1,7 +1,10 @@
-package ru.yandex.practicum;
+package ru.yandex.practicum.service;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import ru.yandex.practicum.exception.FileNotFound;
+import ru.yandex.practicum.exception.FileReadError;
+import ru.yandex.practicum.wordle.service.PrintWriter;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

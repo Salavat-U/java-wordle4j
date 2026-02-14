@@ -1,4 +1,4 @@
-package ru.yandex.practicum;
+package ru.yandex.practicum.wordle.service;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;

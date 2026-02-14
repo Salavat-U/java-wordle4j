@@ -1,8 +1,13 @@
-package ru.yandex.practicum;
+package ru.yandex.practicum.service;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import ru.yandex.practicum.exception.DictionaryIsEmpty;
+import ru.yandex.practicum.exception.FileNotFound;
+import ru.yandex.practicum.exception.FileReadError;
+import ru.yandex.practicum.wordle.service.WordleDictionary;
+import ru.yandex.practicum.wordle.service.WordleDictionaryLoader;
 
 import java.io.IOException;
 import java.io.Writer;

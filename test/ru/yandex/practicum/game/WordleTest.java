@@ -1,8 +1,14 @@
-package ru.yandex.practicum;
+package ru.yandex.practicum.game;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import ru.yandex.practicum.exception.DictionaryIsEmpty;
+import ru.yandex.practicum.exception.FileNotFound;
+import ru.yandex.practicum.exception.FileReadError;
+import ru.yandex.practicum.wordle.service.WordleDictionary;
+import ru.yandex.practicum.wordle.service.WordleDictionaryLoader;
+import ru.yandex.practicum.wordle.game.WordleGame;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;

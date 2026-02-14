@@ -1,4 +1,8 @@
-package ru.yandex.practicum;
+package ru.yandex.practicum.wordle.service;
+
+import ru.yandex.practicum.exception.DictionaryIsEmpty;
+import ru.yandex.practicum.exception.FileNotFound;
+import ru.yandex.practicum.exception.FileReadError;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;

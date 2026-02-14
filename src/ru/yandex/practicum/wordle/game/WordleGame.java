@@ -1,19 +1,29 @@
-package ru.yandex.practicum;
+package ru.yandex.practicum.wordle.game;
+
+import ru.yandex.practicum.exception.WordNotFound;
+import ru.yandex.practicum.exception.WordNotFoundInDictionary;
+import ru.yandex.practicum.wordle.service.WordleDictionary;
 
 import java.util.*;
 
 public class WordleGame {
 
     private String answer;
-    private int attempt;
     private WordleDictionary dictionary;
     private Map<String, String> historyOfWords = new LinkedHashMap<>();
     private List<String> historyHint = new ArrayList<>();
+    private int attempts = 6;
+    private static final int WORD_LENGTH = 5;
+    private static final String STAR = "*";
+    private static final String PLUS = "+";
+    private static final String TICK = "^";
+    private static final String MINUS = "-";
+    private static final String EMPTY_STRING = "";
+    private static final String BACKSLASH = "\\";
 
     public WordleGame(WordleDictionary dictionaryWords) {
         this.dictionary = dictionaryWords;
         this.answer = dictionaryWords.getRandomWord();
-        this.attempt = 6;
     }
 
     public Map<String, String> getHistoryOfWords() {
@@ -29,30 +39,30 @@ public class WordleGame {
     }
 
     public int getAttempt() {
-        return attempt;
+        return attempts;
     }
 
     private String wordAnalysis(String word) {
         StringBuilder answerWord = new StringBuilder(answer);
         char[] arrayAnswer = answer.toCharArray();
         char[] arrayWord = word.toCharArray();
-        String[] help = new String[5];
-        for (int i = 0; i < 5; i++) {
+        String[] help = new String[WORD_LENGTH];
+        for (int i = 0; i < WORD_LENGTH; i++) {
             if (arrayAnswer[i] == arrayWord[i]) {
-                help[i] = "+";
-                answerWord.replace(i, i + 1, "*");
+                help[i] = PLUS;
+                answerWord.replace(i, i + 1, STAR);
             }
         }
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < WORD_LENGTH; i++) {
             if (answerWord.indexOf(String.valueOf(arrayWord[i])) != -1 && help[i] == null) {
-                help[i] = "^";
+                help[i] = TICK;
                 int index = answerWord.indexOf(String.valueOf(arrayWord[i]));
-                answerWord.replace(index, index + 1, "*");
+                answerWord.replace(index, index + 1, STAR);
             } else if (help[i] == null) {
-                help[i] = "-";
+                help[i] = MINUS;
             }
         }
-        return String.join("", help);
+        return String.join(EMPTY_STRING, help);
     }
 
     private List<String> getListHints(Map<String, String> historyOfWords) {
@@ -62,9 +72,9 @@ public class WordleGame {
             String wordInHistory = entry.getKey();
             String charsByWords = entry.getValue();
 
-            dictionaryWords = findWordsByChar(dictionaryWords, wordInHistory, charsByWords, "\\+");
-            dictionaryWords = findWordsByChar(dictionaryWords, wordInHistory, charsByWords, "\\^");
-            dictionaryWords = findWordsByChar(dictionaryWords, wordInHistory, charsByWords, "-");
+            dictionaryWords = findWordsByChar(dictionaryWords, wordInHistory, charsByWords, BACKSLASH + PLUS);
+            dictionaryWords = findWordsByChar(dictionaryWords, wordInHistory, charsByWords, BACKSLASH + TICK);
+            dictionaryWords = findWordsByChar(dictionaryWords, wordInHistory, charsByWords, MINUS);
         }
         return new ArrayList<>(dictionaryWords);
     }
@@ -75,8 +85,8 @@ public class WordleGame {
         Set<String> hintWords = new HashSet<>();
         String symbolsWord = charsByWords;
 
-        while (symbolsWord.contains(symbol.replace("\\", ""))) {
-            int index = symbolsWord.indexOf(symbol.replace("\\", ""));
+        while (symbolsWord.contains(symbol.replace(BACKSLASH, EMPTY_STRING))) {
+            int index = symbolsWord.indexOf(symbol.replace(BACKSLASH, EMPTY_STRING));
             char letterBySymbol = wordInHistory.charAt(index);
             for (String word : resultWords) {
                 if (checkSymbol(word, letterBySymbol, index, symbol)) {
@@ -87,24 +97,24 @@ public class WordleGame {
                 resultWords = new HashSet<>(hintWords);
                 hintWords.clear();
             }
-            symbolsWord = symbolsWord.replaceFirst(symbol, "*");
+            symbolsWord = symbolsWord.replaceFirst(symbol, STAR);
         }
         return resultWords;
     }
 
     private boolean checkSymbol(String word, char letterBySymbol,
                                 int index, String symbol) {
-        if (symbol.equals("\\+")) return word.charAt(index) == letterBySymbol;
-        if (symbol.equals("\\^")) return word.contains(String.valueOf(letterBySymbol)) &&
+        if (symbol.equals(BACKSLASH + PLUS)) return word.charAt(index) == letterBySymbol;
+        if (symbol.equals(BACKSLASH + TICK)) return word.contains(String.valueOf(letterBySymbol)) &&
                 word.charAt(index) != letterBySymbol;
-        if (symbol.equals("-")) return !word.contains(String.valueOf(letterBySymbol));
+        if (symbol.equals(MINUS)) return !word.contains(String.valueOf(letterBySymbol));
 
         return false;
     }
 
     public String startGame(String wordUser) throws WordNotFound, WordNotFoundInDictionary {
         if (wordUser.isEmpty()) {
-            if (historyHint.isEmpty()) {
+            if (historyHint.isEmpty() && historyOfWords.isEmpty()) {
                 String randomWord = dictionary.getRandomWord();
                 historyHint.add(randomWord);
                 return randomWord;
@@ -119,13 +129,16 @@ public class WordleGame {
                 }
                 throw new WordNotFound("Подсказка не найдена");
             }
-        } else if (!dictionary.wordIsInDictionary(wordUser)) {
+        }
+        wordUser = dictionary.filterWord(wordUser);
+
+        if (!dictionary.wordIsInDictionary(wordUser)) {
             throw new WordNotFoundInDictionary("Введено слово не из словаря: " + wordUser);
         }
-        attempt--;
+        attempts--;
 
         if (wordUser.equals(answer)) return "Победа";
-        if (attempt <= 0) return "Поражение";
+        if (attempts <= 0) return "Поражение";
 
         String result = wordAnalysis(wordUser);
         historyOfWords.put(wordUser, result);
