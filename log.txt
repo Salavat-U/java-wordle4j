@@ -1,0 +1,16 @@
+Введено слово не из словаря: fds
+ru.yandex.practicum.wordle.game.WordleGame.startGame(WordleGame.java:134)
+ru.yandex.practicum.wordle.game.Wordle.main(Wordle.java:30)
+---------------
+Введено слово не из словаря: ut
+ru.yandex.practicum.wordle.game.WordleGame.startGame(WordleGame.java:134)
+ru.yandex.practicum.wordle.game.Wordle.main(Wordle.java:30)
+---------------
+Введено слово не из словаря: c
+ru.yandex.practicum.wordle.game.WordleGame.startGame(WordleGame.java:134)
+ru.yandex.practicum.wordle.game.Wordle.main(Wordle.java:30)
+---------------
+Введено слово не из словаря: ut
+ru.yandex.practicum.wordle.game.WordleGame.startGame(WordleGame.java:136)
+ru.yandex.practicum.wordle.game.Wordle.main(Wordle.java:30)
+---------------
